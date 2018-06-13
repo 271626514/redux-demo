@@ -92,7 +92,7 @@
     // redux为我们提供了一个方法
     import { createStore } from 'redux'
 
-`createStore`接收3个函数，其中第一个是必须要传的，接收一个`reducer`,返回一个全局唯一的`store`。这样我们就得到了整个项目的`store`，相当于`redux`的初始化过程。该过程在哪里进行？
+`createStore`接收3个函数，其中第一个是必须要传的，接收一个`reducer`,返回一个全局唯一的`store`。这样我们就得到了整个项目的`state`，相当于`redux`的初始化过程。该过程在哪里进行？
 
 	// file index.js 我们项目的入口文件，这里以 create-react-app生成的文件结构为例
     
@@ -109,14 +109,14 @@
 	ReactDOM.render(<Provider store={store}><App /></Provider>,document.getElementById('root'));
 	registerServiceWorker();
     
-这样全局的`store`被创建成功，并且通过`Provider`挂载到了项目的根组件上，其中的`reducer-foo`和`Provider`稍后会介绍。
+这样全局的`state`被创建成功，并且通过`Provider`挂载到了项目的根组件上，其中的`reducer-foo`和`Provider`稍后会介绍。
 
 - Reducer
 
-在上一段中，我们在初始化时给`createStore`传入了一个函数`reducer-foo`这个函数就是`reducer`。
+在上一段中，我们在初始化时给`createStore`传入了一个函数`reducer-foo`,这个函数就是`reducer`。
 `reducer`的作用就是在`action`发出指令时，`reducer`通过对指令(`action`)分析，判断出要对哪个`state`做出修改，并返回一个新的`state`。因此`reducer`需要两个参数：待修改的`state`，`action`。
 
-好了，这里我们继续完善上面的例子，来看看如何写一个`reducer`:
+这里我们继续完善上面的例子，来看看如何写一个`reducer`:
 
 	// file index.js 我们项目的入口文件，这里以 create-react-app生成的文件结构为例
     
@@ -129,18 +129,22 @@
     
     // 初始化的state
     function reducer (state={}, action) {
-  		return state
+  	  return state
 	}
     
-    const STORE = createStore(reducer-foo)		// 创建store
+    const STORE = createStore(reducer)		// 创建store
 	
     // 通过<Provider>对根组件挂在store
 	ReactDOM.render(<Provider store={store}><App /></Provider>,document.getElementById('root'));
 	registerServiceWorker();
 
+目前来说，有了`state`并且也有了处理`state`的`reducer`，通过上面的数据流向图，现在缺少一个`action`。
 
+- Action
 
+`action`是承载`react`和`state`的桥梁，通过在页面上触发`action`从而调用到`reducer`,`reducer`返回新的`state`,新的`state`再触发`react`的再次渲染，这就是一次完整的`redux`数据流转。
 
+在`redux`中`action`正是代表着一种动作，需要`store`
 
 
 
